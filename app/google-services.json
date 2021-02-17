@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "253320495746",
+    "project_id": "chotoderchora",
+    "storage_bucket": "chotoderchora.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253320495746:android:fb7083c6b5355c641a6a9b",
+        "android_client_info": {
+          "package_name": "com.angik.chotoderchora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253320495746-jjgh3mlrjmq21ihudemahqli80o0119s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.angik.chotoderchora",
+            "certificate_hash": "7c1b3c0664812b5efa184f59e515fb18d30a1097"
+          }
+        },
+        {
+          "client_id": "253320495746-1q93tr115h6jvvkch2ad9cp3g4jd0ndq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-4yowRPv9zKFymB22mrzSLxFgNJFlxN8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253320495746-1q93tr115h6jvvkch2ad9cp3g4jd0ndq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
