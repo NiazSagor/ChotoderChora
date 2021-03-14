@@ -8,9 +8,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.angik.chotoderchora.ChoraListActivityAdapter.ChoraListAdapter;
+import com.angik.chotoderchora.Model.Poem;
 import com.angik.chotoderchora.R;
+import com.angik.chotoderchora.ViewModel.ChoraListActivityViewModel;
 import com.angik.chotoderchora.databinding.ActivityChoraListBinding;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
@@ -19,10 +23,12 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
+import java.util.List;
+
 public class ChoraListActivity extends AppCompatActivity {
 
     private ActivityChoraListBinding binding;
-    private ChoraListAdapter adapter;
+    private ChoraListActivityViewModel viewModel;
 
     private InterstitialAd mInterstitialAd;
 
@@ -36,21 +42,21 @@ public class ChoraListActivity extends AppCompatActivity {
         binding = ActivityChoraListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        if (viewModel == null) {
+            viewModel = ViewModelProviders.of(this).get(ChoraListActivityViewModel.class);
+        }
+
         adRequest = new AdRequest.Builder().build();
 
-        // TODO: 17/02/2021
-        //binding.toolbar.setTitle("");
+        binding.toolbar.setTitle(this.getResources().getString(R.string.chora));
         binding.toolbar.setNavigationOnClickListener(navigationClickListener);
-
-        adapter = new ChoraListAdapter(this.getResources().getStringArray(R.array.categories));
-        binding.choraRecyclerView.setAdapter(adapter);
-
-        adapter.setOnItemClickListener(choraListItemClickListener);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        viewModel.getPoemMutableLiveData().observe(this, getAllPoemsObserver);
     }
 
     private final View.OnClickListener navigationClickListener = new View.OnClickListener() {
@@ -106,15 +112,6 @@ public class ChoraListActivity extends AppCompatActivity {
         }
     };
 
-    private final ChoraListAdapter.OnItemClickListener choraListItemClickListener = new ChoraListAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(int position, View view) {
-            Intent intent = new Intent(ChoraListActivity.this, ChoraActivity.class);
-            intent.putExtra("selected_index", position);
-            startActivity(intent);
-        }
-    };
-
     private void waitAndFinishActivity() {
         handler.postDelayed(new Runnable() {
             @Override
@@ -123,4 +120,29 @@ public class ChoraListActivity extends AppCompatActivity {
             }
         }, 400);
     }
+
+    private final Observer<List<Poem>> getAllPoemsObserver = new Observer<List<Poem>>() {
+        @Override
+        public void onChanged(List<Poem> poems) {
+
+            if (poems != null) {
+
+                binding.progressCircular.setVisibility(View.GONE);
+                ChoraListAdapter adapter = new ChoraListAdapter(ChoraListActivity.this, poems);
+                binding.choraRecyclerView.setAdapter(adapter);
+
+                adapter.setOnItemClickListener(new ChoraListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position, View view) {
+                        Intent intent = new Intent(ChoraListActivity.this, ChoraActivity.class);
+                        intent.putExtra("selected_index", position);
+                        intent.putExtra("poem_code", poems.get(position).getPoemCode());
+                        intent.putExtra("poem_image_link", poems.get(position).getPoemImage());
+                        startActivity(intent);
+                    }
+                });
+            }
+
+        }
+    };
 }

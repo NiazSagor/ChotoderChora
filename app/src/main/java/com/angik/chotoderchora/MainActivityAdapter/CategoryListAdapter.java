@@ -1,8 +1,10 @@
 package com.angik.chotoderchora.MainActivityAdapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -10,14 +12,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angik.chotoderchora.R;
+import com.angik.chotoderchora.Utility.DrawableUtility;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
 
     private OnItemClickListener mListener;
-    private String[] categoryTitles;
 
-    public CategoryListAdapter(String[] categoryTitles) {
+    private final String[] categoryTitles;
+    private final Context context;
+
+    public CategoryListAdapter(String[] categoryTitles, Context context) {
         this.categoryTitles = categoryTitles;
+        this.context = context;
     }
 
     public interface OnItemClickListener {
@@ -38,6 +44,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull CategoryListAdapter.CategoryViewHolder holder, int position) {
+        holder.categoryImageView.setImageDrawable(DrawableUtility.getCategoryDrawable(context, position));
         holder.categoryTitleTextView.setText(categoryTitles[position]);
     }
 
@@ -48,14 +55,16 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView categoryTitleTextView;
-        private LinearLayout linearLayout;
+        private final TextView categoryTitleTextView;
+
+        private final ImageView categoryImageView;
 
         public CategoryViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
 
-            linearLayout = itemView.findViewById(R.id.imageCardView);
             categoryTitleTextView = itemView.findViewById(R.id.categoryTitle);
+
+            categoryImageView = itemView.findViewById(R.id.categoryImageView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

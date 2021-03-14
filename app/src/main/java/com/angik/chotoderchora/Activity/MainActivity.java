@@ -1,12 +1,8 @@
 package com.angik.chotoderchora.Activity;
 
-import android.app.ActivityManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,16 +14,10 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
     private CategoryListAdapter adapter;
     private ActivityMainBinding binding;
-
-    public static final String KEY_IS_FIRST_LAUNCH = "IS_FIRST_LAUNCH";
-
-    private String[] categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        categories = this.getResources().getStringArray(R.array.categories);
-
-        adapter = new CategoryListAdapter(categories);
+        adapter = new CategoryListAdapter(
+                this.getResources().getStringArray(R.array.categories), this
+        );
 
         binding.categoryGridView.setLayoutManager(
                 new GridLayoutManager(getApplicationContext(), 2)

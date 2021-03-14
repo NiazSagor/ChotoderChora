@@ -16,6 +16,7 @@
         android:theme="@style/Theme.ChotoderChora">
         <activity
             android:name=".Activity.ChoraActivity"
+            android:theme="@style/AppTheme.Transparent"
             android:parentActivityName=".Activity.ChoraListActivity" />
         <activity
             android:name=".Activity.ChoraListActivity"

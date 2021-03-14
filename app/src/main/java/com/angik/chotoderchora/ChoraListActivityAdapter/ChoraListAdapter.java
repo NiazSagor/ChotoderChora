@@ -1,24 +1,31 @@
 package com.angik.chotoderchora.ChoraListActivityAdapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.angik.chotoderchora.Model.Poem;
 import com.angik.chotoderchora.R;
+import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 public class ChoraListAdapter extends RecyclerView.Adapter<ChoraListAdapter.ChoraViewHolder> {
 
     private OnItemClickListener mListener;
-    private String[] choraTitles;
+    private final List<Poem> poemList;
+    private Context context;
 
-    public ChoraListAdapter(String[] choraTitles) {
-        this.choraTitles = choraTitles;
+    public ChoraListAdapter(Context context, List<Poem> poemList) {
+        this.context = context;
+        this.poemList = poemList;
     }
 
     public interface OnItemClickListener {
@@ -39,23 +46,33 @@ public class ChoraListAdapter extends RecyclerView.Adapter<ChoraListAdapter.Chor
 
     @Override
     public void onBindViewHolder(@NonNull ChoraListAdapter.ChoraViewHolder holder, int position) {
-        holder.choraTitleTextView.setText(choraTitles[position]);
+
+        Glide
+                .with(context)
+                .load(poemList.get(position).getPoemImage())
+                .centerCrop()
+                .into(holder.poemImageView);
+
+
+        holder.choraTitleTextView.setText(poemList.get(position).getPoemTitle());
     }
 
     @Override
     public int getItemCount() {
-        return choraTitles.length;
+        return poemList.size();
     }
 
     public class ChoraViewHolder extends RecyclerView.ViewHolder {
 
         private TextView choraTitleTextView;
+        private ImageView poemImageView;
         private CardView cardView;
 
         public ChoraViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
 
             cardView = itemView.findViewById(R.id.imageCardView);
+            poemImageView = itemView.findViewById(R.id.choraImageView);
             choraTitleTextView = itemView.findViewById(R.id.choraTitle);
 
             itemView.setOnClickListener(new View.OnClickListener() {

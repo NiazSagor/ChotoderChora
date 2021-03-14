@@ -13,13 +13,25 @@ import android.widget.SeekBar;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import com.angik.chotoderchora.R;
+import com.angik.chotoderchora.ViewModel.ChoraActivityViewModel;
 import com.angik.chotoderchora.databinding.FragmentChoraBinding;
-import com.google.android.gms.ads.AdRequest;
+import com.bumptech.glide.Glide;
+
+import java.io.IOException;
+
+import static android.view.View.GONE;
 
 public class ChoraFragment extends Fragment {
+
+    private ChoraActivityViewModel viewModel;
+
+    private String POEM_CODE;
+    private String POEM_IMAGE_URL;
 
     private int CURRENT_POSITION = 0;
     private int switchNumber = 0;
@@ -36,14 +48,23 @@ public class ChoraFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             CURRENT_POSITION = getArguments().getInt("current_index");
+            POEM_IMAGE_URL = getArguments().getString("poem_image");
+            POEM_CODE = getArguments().getString("poem_code");
+        }
+
+        if (viewModel == null) {
+            viewModel = ViewModelProviders.of(this).get(ChoraActivityViewModel.class);
         }
 
         handler = new Handler();
 
-        mediaPlayer = MediaPlayer.create(getContext(), R.raw.test);
+        mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        playAudio();
     }
 
     private FragmentChoraBinding binding;
@@ -54,26 +75,35 @@ public class ChoraFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentChoraBinding.inflate(getLayoutInflater());
 
-        binding.audioSeekBar.setMax(mediaPlayer.getDuration());
-        playCycle();
-
         return binding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        loadBannerAd();
-        binding.currentPositionText.setText(String.valueOf(CURRENT_POSITION));
+
+        setupPoemBackground();
+
         binding.playPause.setOnClickListener(playButtonClickListener);
         binding.audioSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+    }
+
+    private void setupPoemBackground() {
+
+        Glide
+                .with(getContext())
+                .load(POEM_IMAGE_URL)
+                .into(binding.choraImageView);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mediaPlayer.start();
-        playCycle();
+
+        if (!mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+            playCycle();
+        }
     }
 
     @Override
@@ -85,14 +115,16 @@ public class ChoraFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mediaPlayer.release();
+        //mediaPlayer.release();
+        mediaPlayer.reset();
         handler.removeCallbacks(runnable);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mediaPlayer.release();
+        mediaPlayer.reset();
+        //mediaPlayer.release();
     }
 
     private void playCycle() {
@@ -107,11 +139,6 @@ public class ChoraFragment extends Fragment {
             };
             handler.postDelayed(runnable, 1000);
         }
-    }
-
-    private void loadBannerAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        binding.adView.loadAd(adRequest);
     }
 
 
@@ -169,6 +196,36 @@ public class ChoraFragment extends Fragment {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
 
+        }
+    };
+
+    private void playAudio() {
+
+        viewModel.getPoemAudioLinkMutableLiveData(POEM_CODE).observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                try {
+                    mediaPlayer.setDataSource(s);
+
+                    mediaPlayer.prepareAsync();
+
+                    mediaPlayer.setOnPreparedListener(onPreparedListener);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private final MediaPlayer.OnPreparedListener onPreparedListener = new MediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(MediaPlayer mediaPlayer) {
+            binding.progressCircular.setVisibility(GONE);
+            mediaPlayer.start();
+            playCycle();
+            binding.audioSeekBar.setMax(mediaPlayer.getDuration());
+            binding.audioSeekBar.setProgress(mediaPlayer.getCurrentPosition());
         }
     };
 }

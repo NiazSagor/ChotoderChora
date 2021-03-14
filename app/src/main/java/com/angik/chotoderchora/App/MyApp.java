@@ -7,7 +7,12 @@ import com.angik.chotoderchora.Activity.MainActivity;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.FirebaseApp;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class MyApp extends Application {
+
+    public static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     public void onCreate() {
@@ -15,8 +20,5 @@ public class MyApp extends Application {
 
         FirebaseApp.initializeApp(this);
         MobileAds.initialize(this);
-
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.KEY_IS_FIRST_LAUNCH, MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean("isFirstLaunch", true).apply();
     }
 }
