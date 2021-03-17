@@ -63,7 +63,7 @@ public class ChoraListActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             InterstitialAd.load(
-                    ChoraListActivity.this, "ca-app-pub-3940256099942544/1033173712", adRequest, interstitialAdLoadCallback
+                    ChoraListActivity.this, "ca-app-pub-1905179364235619/5542445414", adRequest, interstitialAdLoadCallback
             );
         }
     };

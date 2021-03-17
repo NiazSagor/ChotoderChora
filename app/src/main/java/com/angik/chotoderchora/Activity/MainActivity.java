@@ -2,6 +2,7 @@ package com.angik.chotoderchora.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +16,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "MainActivity";
     private CategoryListAdapter adapter;
     private ActivityMainBinding binding;
 
@@ -64,9 +65,10 @@ public class MainActivity extends AppCompatActivity {
                         new Intent(MainActivity.this, ChoraListActivity.class)
                 );
             } else {
-                startActivity(
-                        new Intent(MainActivity.this, ChoraActivity.class)
-                );
+                Intent intent = new Intent(MainActivity.this, ChoraActivity.class);
+                intent.putExtra("position", position);
+                intent.putExtra("category_name", MainActivity.this.getResources().getStringArray(R.array.categories)[position]);
+                startActivity(intent);
             }
         }
     };

@@ -11,7 +11,9 @@ public class DrawableUtility {
 
     private static final int[] CATEGORY_DRAWABLES = {
             R.drawable.itol_bitol,
-            R.drawable.bangla_alphabet_bg
+            R.drawable.bangla_alphabet_bg,
+            R.drawable.benjonborno_bg,
+            R.drawable.bangla_number_bg
     };
 
     public static Drawable getCategoryDrawable(Context context, int position){

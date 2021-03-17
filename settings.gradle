@@ -1,2 +1,4 @@
+include ':YouTubeAndroidPlayer'
+include ':YouTubeAndroidPlayerApi'
 include ':app'
 rootProject.name = "ChotoderChora"

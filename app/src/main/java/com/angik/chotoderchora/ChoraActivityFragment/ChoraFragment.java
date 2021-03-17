@@ -17,16 +17,21 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
+import com.angik.chotoderchora.Activity.ChoraActivity;
+import com.angik.chotoderchora.Interface.OnBackPressedListener;
 import com.angik.chotoderchora.R;
 import com.angik.chotoderchora.ViewModel.ChoraActivityViewModel;
 import com.angik.chotoderchora.databinding.FragmentChoraBinding;
 import com.bumptech.glide.Glide;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static android.view.View.GONE;
 
 public class ChoraFragment extends Fragment {
+
+    private static final String TAG = "ChoraFragment";
 
     private ChoraActivityViewModel viewModel;
 
@@ -75,6 +80,13 @@ public class ChoraFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentChoraBinding.inflate(getLayoutInflater());
 
+        ((ChoraActivity) Objects.requireNonNull(getActivity())).setOnBackPressedListener(new OnBackPressedListener() {
+            @Override
+            public void onBackPressed() {
+
+            }
+        });
+
         return binding.getRoot();
     }
 
@@ -88,13 +100,6 @@ public class ChoraFragment extends Fragment {
         binding.audioSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
     }
 
-    private void setupPoemBackground() {
-
-        Glide
-                .with(getContext())
-                .load(POEM_IMAGE_URL)
-                .into(binding.choraImageView);
-    }
 
     @Override
     public void onResume() {
@@ -141,6 +146,14 @@ public class ChoraFragment extends Fragment {
         }
     }
 
+    private void setupPoemBackground() {
+
+        Glide
+                .with(getContext())
+                .load(POEM_IMAGE_URL)
+                .into(binding.choraImageView);
+    }
+
 
     private final View.OnClickListener playButtonClickListener = new View.OnClickListener() {
         @Override
@@ -174,6 +187,7 @@ public class ChoraFragment extends Fragment {
                     animatedVectorDrawable.start();
                 }
                 mediaPlayer.start();
+                playCycle();
                 switchNumber--;
             }
         }
