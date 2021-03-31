@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ChoraActivityFragment.BanglaNumberFragment">
 
-    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-        android:id="@+id/youtube_player_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:autoPlay="false"
+    <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+        android:id="@+id/videoFrameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:background="@android:color/black"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:showFullScreenButton="true" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/video_player_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:auto_show="false"
+            app:controller_layout_id="@layout/player_control_view"
+            app:fastforward_increment="10000"
+            app:rewind_increment="10000"
+            app:use_controller="true" />
+
+    </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

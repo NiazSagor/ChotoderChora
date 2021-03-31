@@ -1,3 +1,4 @@
+include ':chotodergolpo'
 include ':YouTubeAndroidPlayer'
 include ':YouTubeAndroidPlayerApi'
 include ':app'
