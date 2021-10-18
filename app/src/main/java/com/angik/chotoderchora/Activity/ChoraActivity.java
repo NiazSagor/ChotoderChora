@@ -3,7 +3,6 @@ package com.angik.chotoderchora.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -19,7 +18,6 @@ import com.angik.chotoderchora.Helper.FullScreenHelper;
 import com.angik.chotoderchora.Interface.OnBackPressedListener;
 import com.angik.chotoderchora.Model.Poem;
 import com.angik.chotoderchora.PageTransform.DepthPageTransformer;
-import com.angik.chotoderchora.R;
 import com.angik.chotoderchora.ViewModel.ChoraActivityViewModel;
 import com.angik.chotoderchora.databinding.ActivityChoraBinding;
 import com.google.android.gms.ads.AdError;
@@ -185,7 +183,10 @@ public class ChoraActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        listener.onBackPressed();
+        if (listener != null) {
+            listener.onBackPressed();
+        }
+
     }
 
     private void waitAndFinishActivity() {
