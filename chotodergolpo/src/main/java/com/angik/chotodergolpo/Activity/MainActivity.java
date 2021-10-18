@@ -10,9 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.angik.chotodergolpo.Adapter.CategoryListAdapter;
 import com.angik.chotodergolpo.databinding.ActivityMainBinding;
 import com.google.android.gms.ads.AdRequest;
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,16 +44,16 @@ public class MainActivity extends AppCompatActivity {
     private void setUserName() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("Hi,").append("\n").append(
-                Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName()
-        );
-
-        binding.greetingTextView.setText(stringBuilder);
-
-        stringBuilder = new StringBuilder();
-        stringBuilder.append("Hi, ").append(
-                FirebaseAuth.getInstance().getCurrentUser().getDisplayName()
-        );
+//        stringBuilder.append("Hi,").append("\n").append(
+//                Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName()
+//        );
+//
+//        binding.greetingTextView.setText(stringBuilder);
+//
+//        stringBuilder = new StringBuilder();
+//        stringBuilder.append("Hi, ").append(
+//                FirebaseAuth.getInstance().getCurrentUser().getDisplayName()
+//        );
 
         binding.textView.setText(stringBuilder);
     }
